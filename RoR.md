@@ -64,11 +64,11 @@ para actualizar las depencias, Corremos el comando:
 
 nos muestra las tareas programadas en rails
 
-  ~ rake -T
+    ~ rake -T
 
 Usamos la primera tarea para crear la base de datos en el motor:
 
-  ~ rake db:drop db:create db:migrate
+    ~ rake db:drop db:create db:migrate
 
 El ultimo comando nos arroja el siguiente error:
 *could not connect to server: No such file or directory*
@@ -104,3 +104,25 @@ SOLUCION:
 
     ~ cd onedrive/platzi
     ~ mv RoR ror
+
+---
+#Activar HSTOR en PosgreSQL
+para eso haremos una migración
+
+    ~ rails g migration add_hstore
+
+Esto nos genera un rarchivo *20150830162955_add_hstore.rb* en el directorio => db/migrate
+El archivo debe tener el siguiente codigo:
+
+    class AddHstore < ActiveRecord::Migration
+        def up
+            enable_extension :hstore
+        end
+    
+        def down
+            disable_extension :hstore
+        end
+    end
+
+
+    
