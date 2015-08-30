@@ -106,7 +106,7 @@ SOLUCION:
     ~ mv RoR ror
 
 ---
-#Activar HSTOR en PosgreSQL
+#Activar HSTORE en PosgreSQL
 para eso haremos una migración
 
     ~ rails g migration add_hstore
@@ -124,5 +124,47 @@ El archivo debe tener el siguiente codigo:
         end
     end
 
+En la consola aplicamos la migración
+
+    ~ rake db:migrate
+    
+#Generaremos nuestro modelo usando las migraciones y el patron ACTIVE_RECORD
+gereramos el modelo
+
+    ~rails g model image name category:integer description:text tags
+    
+Nos generá un archivo en la carpeta => db/migrate, lo dejamos con el siguiente condigo:
+
+    class CreateImages < ActiveRecord::Migration
+      def change
+        create_table :images do |t|
+          t.string :name, null: false
+          t.integer :category, default: 0
+          t.text :description
+          t.string :tags, array: true, default: [] 
+                                                
+          t.timestamps null: false
+        end
+      end
+    end
+
+Hora ejecutamos la migración:
+
+    ~ rake db:migrate
+    == 20150830164618 CreateImages: migrating =====================================
+    -- create_table(:images)
+       -> 0.0942s
+    == 20150830164618 CreateImages: migrated (0.0943s) ============================
+    
+---
+#Ahora trabajaremos en la consola de Rails
+para eso ejecutamos:
+
+    ~ rails c
+    
+Nos queda el siguiente pront (pry biene de una gema pryrails que decora el codigo de la consola de Rails:
+
+    Loading development environment (Rails 4.2.4)
+    [1] pry(main)>
 
     
