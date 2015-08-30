@@ -1,20 +1,35 @@
-#Instalando Ruby on Rails
-1. Instalar RVM y Ruby a la vez:
-* ~ curl -L https://get.rvm.io | bash -s stable --ruby
-##luego de instalar ejecutar la sigiente fuente:
-* ~ source ~/.rvm/scripts/rvm
-##para revisar que ruby hay instalado:
-* ~ rvm list
-1. Definimos el Gemset del proyecto
-##creamos el Gemset: Gemset_onepx en este caso, y le decimos que lo use todo en el mismo comando:
-* ~ rvm use 2.2.1@Gemset_onepx --create
-##si solo quisieramos indicar que use cierto Gemset:
-* ~ rvm 2.2.1@[Nombre del Gemset]
-1. Instalamos Rails en el proyecto
-##Instalamos la ultima version disponible:
-* ~ gem install rails
-##para saber los gemset instalados:
-* ~ rvm gemset list_all
+Instalando Ruby on Rails
+==============================================
+
+Instalar RVM y Ruby a la vez:
+
+    ~ curl -L https://get.rvm.io | bash -s stable --ruby
+
+luego de instalar ejecutar la sigiente fuente:
+
+    ~ source ~/.rvm/scripts/rvm
+
+para revisar que ruby hay instalado:
+
+    ~ rvm list
+
+###Definimos el Gemset del proyecto
+creamos el Gemset: *Gemset_onepx* en este caso, y le decimos que lo use todo en el mismo comando:
+
+    ~ rvm use 2.2.1@Gemset_onepx --create
+
+si solo quisieramos indicar que use cierto Gemset:
+
+    ~ rvm 2.2.1@[Nombre del Gemset]
+
+###Instalamos Rails en el proyecto
+Instalamos la ultima version disponible:
+
+    ~ gem install rails
+
+para saber los gemset instalados:
+
+    ~ rvm gemset list_all
 
 ---
 
