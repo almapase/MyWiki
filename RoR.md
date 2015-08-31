@@ -159,7 +159,7 @@ Hora ejecutamos la migración:
     == 20150830164618 CreateImages: migrated (0.0943s) ============================
     
 ---
-#Hoara trabajaremos con nuestro modelo
+#Ahora trabajaremos con nuestro modelo
 en el archivo *image.rb* colocamos el siguente codigo, que nos permitira darle nombre a las categorias
 por medio de un *enumerable*
 
@@ -313,5 +313,83 @@ Todos los metodos diponibles para *Image*
      :category_came_from_user?,
 
 #Ahora conectaremos el patron MVC
+Si cerramos la consola debemos asegurarnos que usemos el GemSet correcto, cuando uasamos RVM
 
+    ~/onedrive/platzi/ror/onepx(image-management ✗) rvm list gemsets
+    
+    rvm gemsets
+    
+    => ruby-2.2.1 [ x86_64 ]
+       ruby-2.2.1@Gemset_onepx [ x86_64 ]
+       ruby-2.2.1@global [ x86_64 ]
+    
+    ~/onedrive/platzi/ror/onepx(image-management ✗) rvm use ruby-2.2.1@Gemset_onepx
+    Using /Users/almapase/.rvm/gems/ruby-2.2.1 with gemset Gemset_onepx
+
+
+#Validando datos del formulario
+agregamos la siguiente linea en el archivo *image.rb* justo antes de la ¡s definiciones de metodos
+
+    validates :name, presence: true # name tiene que ser requerido
+
+en el archivo *images_controller.rb* modoficamos el metodo *create*
+
+    def create
+        @image = Image.new secure_params
+        
+        #Pregunta si no hay errores al guardar
+        if @image.save
+          return redirect_to images_path, notice: t('.created', model: @image.class.model_name.human)
+          #notice captura cuando algo sucedio bien, usando flash registro de llave, valor
+        end
+        
+        render :new # me vuelve a mostrar la pagina de NEW manteniendo los datos
+    end
+
+En la carpeta *lib* creamos un archivo llamado *custom_form_builder.rb* con el siguuente contenido
+
+    class CustomFormBuilder < ActionView::Helpers::FormBuilder
+        def form_error
+            if self.object.errors.any?
+              plural_name = self.object.class.model_name.plural
+              model_name = self.object.class.model_name.human
+              is_new = self.object.persisted? ? 'edit' : 'new'
+            
+              @template.content_tag :div, class: 'form-error' do
+                @template.content_tag :p, I18n.t("#{plural_name}.#{is_new}.form.error", model: model_name)
+              end
+            end
+            end
+            
+            def field_error(method)
+            if self.object.errors[method].any?
+              @template.content_tag :span, self.object.errors[method].first, class: 'field_error' 
+            end
+        end
+    end
+
+En el archivo *config/application.rb* agregar la siguiente linea:
+
+    #Al arranar la aplicacion carge los archivos que estan el siguinte  directorio
+    config.autoload_paths += %W(#{config.root}/lib)
+
+En el archivo *new.html.rb* modoficamos como sigue:
+
+    <%= form_for @image, builder: CustomFormBuilder do |form| %>
+      <%= form.form_error %>
+                                                        
+      <div class="field">
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+        <%= form.field_error :name %>
+
+En el archivo *app/views/layouts/application.html.erb* y agregamos el siguiente codigo en el <body>
+
+      <div id="flash">
+        <% flash.each do |key, value| -%>
+          <div id="flash-<%= key %>">
+            <%= value %>
+          </div>
+        <% end -%>
+      </div>
 
