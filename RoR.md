@@ -393,3 +393,32 @@ En el archivo *app/views/layouts/application.html.erb* y agregamos el siguiente 
         <% end -%>
       </div>
 
+#Optimiza para un listado de imágenes
+modificamos el INDEX del archivo *images_controler.rb*
+
+    def index
+        @images = Image.all #TODO paginacion con KAMINARY
+      end
+      
+modifificamos el *index.html.erb*
+
+    <section class="images">
+      <%= render @images %>
+    </section>
+
+Creamos una vista partcial *_image.html.erb*
+
+    <div class="image-box">
+      <div class="image-content">
+        <h2><%= image.name %></h2>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
